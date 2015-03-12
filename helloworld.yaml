@@ -22,7 +22,6 @@ params:
 
 install:
     stepsi:
-        - "sudo apt-get install git"
         - "git clone git://github.com/wuyuer/test.git" 
         - "cd test"
         - "make"
