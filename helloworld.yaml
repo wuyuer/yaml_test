@@ -1,0 +1,39 @@
+
+metadata:
+    name: helloworld
+    format: "Lava-Test-Shell Test Definition 1.0"
+    description: "Test hackbench the simple helloworld."
+    maintainer:
+        - wuyanjun@163.com
+    scope:
+        - functional
+    os:
+        - ubuntu
+    devices:
+        - d02
+
+install:
+    deps:
+        - coreutils
+
+params:
+    # Number of cycles helloworld is called (for loop repetitions)
+    REPEAT: 1000
+
+install:
+    steps:
+        - "git clone https://github.com/wuyuer/test.git" 
+        - "cd test"
+        - "make"
+       
+run:
+    steps:
+        - "./helloworld"
+        - "make clean"
+    
+parse:
+    pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
+    fixupdict:
+        FAIL: fail
+        PASS: pass
+
