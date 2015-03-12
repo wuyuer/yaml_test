@@ -21,14 +21,14 @@ params:
     REPEAT: 1000
 
 install:
-    stepsi:
-        - "git clone git://github.com/wuyuer/test.git" 
-        - "cd test"
-        - "make"
+    git-repos:
+        - git clone git://github.com/wuyuer/test.git 
+    steps:
+        - "cd test && make"
        
 run:
     steps:
-        - "./helloworld"
+        - "cd test; chmod +x helloworld; ./helloworld"
         - "make clean"
     
 parse:
