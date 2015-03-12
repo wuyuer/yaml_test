@@ -12,10 +12,6 @@ metadata:
     devices:
         - d02
 
-install:
-    deps:
-        - coreutils
-
 params:
     # Number of cycles helloworld is called (for loop repetitions)
     REPEAT: 1000
