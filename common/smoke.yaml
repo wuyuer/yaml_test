@@ -12,24 +12,24 @@ metadata:
         - d03
         - d01
 
- run:
-     steps:
-         - lava-test-case linux-linaro-pwd --shell pwd
-         - lava-test-case linux-linaro-uname --shell uname -a
-         - lava-test-case linux-linaro-vmstat --shell vmstat
-         - lava-test-case linux-linaro-ifconfig --shell ifconfig -a
-         - lava-test-case linux-linaro-lscpu --shell lscpu
-         - lava-test-case linux-linaro-lsb_release --shell  lsb_release -a
-         - lava-test-case linux-linaro-cpuinfo --shell cat /proc/cpuinfo
-         - lava-test-case linux-linaro-meminfo --shell cat /proc/meminfo
-         - lava-test-case linux-linaro-dmesg --shell dmesg
-         - lava-test-case linux-linaro-ps --shell ps
-         - lava-test-case linux-linaro-issue --shell cat /etc/issue || cat /etc/redhat-release
-         - lava-test-case linux-linaro-interrupts --shell cat /proc/interrupts
-         - lava-test-case linux-linaro-boot-cmds --shell cat /proc/cmdline
-         - lava-test-case linux-linaro-device-info --shell cat /proc/devices
-         - lava-test-case linux-linaro-filesystem-info --shell cat /proc/filesystems
-         - lava-test-case linux-linaro-proc-dma --shell cat /proc/dma
-         - lava-test-case linux-linaro-env --shell env
-         - lava-test-case linux-linaro-lsmod --shell lsmod
-         - lava-test-case linux-linaro-cpu-info --shell lscpu
+run:
+    steps:
+        - lava-test-case linux-linaro-pwd --shell pwd
+        - lava-test-case linux-linaro-uname --shell uname -a
+        - lava-test-case linux-linaro-vmstat --shell vmstat
+        - lava-test-case linux-linaro-ifconfig --shell ifconfig -a
+        - lava-test-case linux-linaro-lscpu --shell lscpu
+        - lava-test-case linux-linaro-lsb_release --shell  lsb_release -a
+        - lava-test-case linux-linaro-cpuinfo --shell cat /proc/cpuinfo
+        - lava-test-case linux-linaro-meminfo --shell cat /proc/meminfo
+        - lava-test-case linux-linaro-dmesg --shell dmesg
+        - lava-test-case linux-linaro-ps --shell ps
+        - lava-test-case linux-linaro-issue --shell cat /etc/issue || cat /etc/redhat-release
+        - lava-test-case linux-linaro-interrupts --shell cat /proc/interrupts
+        - lava-test-case linux-linaro-boot-cmds --shell cat /proc/cmdline
+        - lava-test-case linux-linaro-device-info --shell cat /proc/devices
+        - lava-test-case linux-linaro-filesystem-info --shell cat /proc/filesystems
+        - lava-test-case linux-linaro-proc-dma --shell cat /proc/dma
+        - lava-test-case linux-linaro-env --shell env
+        - lava-test-case linux-linaro-lsmod --shell lsmod
+        - lava-test-case linux-linaro-cpu-info --shell lscpu
