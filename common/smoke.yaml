@@ -33,3 +33,5 @@ run:
         - lava-test-case linux-linaro-env --shell env
         - lava-test-case linux-linaro-lsmod --shell lsmod
         - lava-test-case linux-linaro-cpu-info --shell lscpu
+        - lava-test-case linux-linaro-pci-info --shell lspci
+        - lava-test-case linux-linaro-usb-info --shell lsusb

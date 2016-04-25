@@ -1,0 +1,25 @@
+metadata:
+    name: samba
+    format: "Lava-Test-Shell Test Definition 1.0"
+    description: "Run tests from sambe suite on Ubuntu"
+    maintainer:
+        - wu.wu@hisilicon.com
+    scope:
+        - functional
+    devices:
+        - d02
+        - d01
+        - d03
+    environment:
+        - lava-test-shell
+
+install:
+    deps:
+        - smbclient
+
+run:
+    steps:
+        - lava-sync ready
+        - "./ubuntu/scripts/samba-client.sh"
+        - lava-sync done
+
