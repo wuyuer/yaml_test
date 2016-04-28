@@ -20,7 +20,7 @@ install:
 
 run:
     steps:
-        - "./ubuntu/scripts/samba-server.sh"
+        - "./ubuntu/common/samba-server.sh"
         - lava-sync ready
         - lava-sync done
 
