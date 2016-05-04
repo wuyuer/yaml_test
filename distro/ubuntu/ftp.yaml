@@ -21,7 +21,7 @@ metadata:
         - d01
 install:
     deps:
-        -vsftpd
+        - vsftpd
 
 run:
     steps:
