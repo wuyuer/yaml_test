@@ -1,10 +1,10 @@
 
 metadata:
-    name: helloworld
+    name: smoke_testing
     format: "Lava-Test-Shell Test Definition 1.0"
-    description: "Test hackbench the simple helloworld."
+    description: "do the basic smoke testing."
     maintainer:
-        - wuyanjun@163.com
+        - wuyanjun1027@163.com
     scope:
         - functional
     os:
