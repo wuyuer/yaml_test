@@ -7,6 +7,14 @@ metadata:
         - wuyanjun@163.com
     scope:
         - functional
+    os:
+        - ubuntu
+        - openembedded
+        - fedora
+        - opensuse
+        - centos
+        - debian
+
     devices:
         - d02
         - d03
@@ -35,4 +43,10 @@ run:
         - lava-test-case linux-linaro-cpu-info --shell lscpu
         - lava-test-case linux-linaro-pci-info --shell lspci
         - lava-test-case linux-linaro-usb-info --shell lsusb
-        - lava-test-case linux-linaro-dmicode --shell dmidecode
+        - lava-test-case kernel-space-sysfs-dmi-exist --shell ls /sys/class/dmi/
+        - lava-test-case kernel-space-sysfs-dmi-id-exist --shell ls /sys/class/dmi/id
+        - lava-test-case kernel-space-sysfs-bios-date --shell cat /sys/class/dmi/id/bios_date
+        - lava-test-case kernel-space-sysfs-bios-vendor --shell cat /sys/class/dmi/id/bios_vendor
+        - lava-test-case kernel-space-sysfs-bios-version --shell cat /sys/class/dmi/id/bios_version
+        - ./common/scripts/dmidecode.sh
+
