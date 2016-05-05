@@ -25,5 +25,5 @@ install:
 
 run:
     steps:
-        - ./distro/common/scripts/ftp.sh
+        - ./distro/common/ftp.sh
 
