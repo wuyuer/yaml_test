@@ -6,6 +6,12 @@ metadata:
         - wu.wu@hisilicon.com
     scope:
         - functional
+    os:
+        - ubuntu
+        - fedora
+        - opensuse
+        - centos
+        - debian
     devices:
         - d02
         - d01

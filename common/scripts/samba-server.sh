@@ -1,8 +1,9 @@
 #! /bin/bash
 server_ip=$(ifconfig `route -n | grep "^0"|awk '{print $NF}'`|grep -o "addr inet:[0-9\.]*"|cut -d':' -f 2)
 if [ "$server_ip"x = ""x ]; then
-    server_ip=$(ifconfig `ip  route | grep "default" | awk '{print $NF}'` | grep -o "inet addr:[0-9\.]*" | cut -d":" -f 2)
+    server_ip=$(ip addr show `ip route | grep "default" | awk '{print $NF}'`| grep -o "inet [0-9\.]*" | cut -d" " -f 2)
 fi
+. ../../common.sh
 
 sudo useradd -p '123ABS' smb
 
