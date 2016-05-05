@@ -25,13 +25,19 @@ fi
 vsftpd_op 'start'
 vsftpd_op 'restart'
 vsftpd_op 'stop'
-service vsftpd start
 
 # prepare for the put and get test and the ftp home is ~/
 mkdir tmp
 pushd tmp && echo 'For ftp put testing' > ftp_put_test.log
 echo 'For ftp get testing' > ~/ftp_get_test.log
 
+sed -i 's/root/#root/g' /etc/ftpusers
+sed -i 's/listen=NO/listen=YES/g'  /etc/vsftpd.conf
+sed -i 's/listen_ipv6=YES/#listen_ipv6=YES/g'  /etc/vsftpd.conf
+sed -i 's/#write_enable=YES/write_enable=YES/g'  /etc/vsftpd.conf
+
+service vsftpd start | tee ${log_file}
+service vsftpd status | tee ${log_file}
 # for get and put test
 /usr/bin/expect << EOF
     set timeout 100
