@@ -7,7 +7,7 @@ function vsftpd_op()
     operation=$1 
     echo "service vsftpd $operation" | tee ${log_file}
     service vsftpd $operation | tee ${log_file}
-    if [ 0 -n $? ]; then
+    if [ 0 -ne $? ]; then
         echo "vsftpd $operation failed"
         lava-test-case vsftpd-$operation --result fail 
     else
@@ -29,7 +29,7 @@ service vsftpd start
 
 # prepare for the put and get test and the ftp home is ~/
 mkdir tmp
-push tmp && echo 'For ftp put testing' > ftp_put_test.log
+pushd tmp && echo 'For ftp put testing' > ftp_put_test.log
 echo 'For ftp get testing' > ~/ftp_get_test.log
 
 # for get and put test
@@ -63,7 +63,7 @@ if [ $(`find . -name 'ftp_get_test.log'`)x != ""x ]; then
 else
     lava-test-case vsftpd-download --result fail
 fi
-pop
+popd
 
 cd ~
 if [ $(`find . -name 'ftp_put_test.log'`)x != ""x ]; then

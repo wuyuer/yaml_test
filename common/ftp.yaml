@@ -22,6 +22,7 @@ metadata:
 install:
     deps:
         - vsftpd
+        - expect
 
 run:
     steps:
