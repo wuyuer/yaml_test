@@ -11,8 +11,8 @@ function vsftpd_op()
         echo "vsftpd $operation failed"
         lava-test-case vsftpd-$operation --result fail 
     else
-        echo "vsftpd $operation success"
-        lava-test-case vsftpd-$operation --result success
+        echo "vsftpd $operation pass"
+        lava-test-case vsftpd-$operation --result pass
     fi
 }
 
@@ -37,29 +37,34 @@ echo 'For ftp get testing' > ~/ftp_get_test.log
     set timeout 100
     spawn ftp localhost
     expect "Name"
-    send "/r"
+    send "\r"
     expect "password:"
-    send "root/r"
+    send "root\r"
     expect "ftp>" 
-    send "get ftp_get_test.log/r"
+    send "get ftp_get_test.log\r"
     expect {
        "Transfer complete"
        {
-           send "put ftp_put_test.log/r"
+           send "put ftp_put_test.log\r"
            expect "Transfer complete"
        }
        "Failed to open file"
        {
-           send "put ftp_put_test.log/r"
+           send "put ftp_put_test.log\r"
+           expect "Transfer complete"
+       }
+       "Connection refused"
+       {
+           send "put ftp_put_test.log\r"
            expect "Transfer complete"
        }
     }
-    send "quit/r"
+    send "quit\r"
     expect eof
 EOF
 
 if [ $(`find . -name 'ftp_get_test.log'`)x != ""x ]; then
-    lava-test-case vsftpd-download --result success
+    lava-test-case vsftpd-download --result pass
 else
     lava-test-case vsftpd-download --result fail
 fi
@@ -67,7 +72,7 @@ popd
 
 cd ~
 if [ $(`find . -name 'ftp_put_test.log'`)x != ""x ]; then
-    lava-test-case vsftpd-upload --result success
+    lava-test-case vsftpd-upload --result pass
 else
     lava-test-case vsftpd-upload --result fail
 fi

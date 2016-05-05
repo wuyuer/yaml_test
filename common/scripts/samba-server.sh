@@ -8,20 +8,27 @@ fi
 sudo useradd -p '123ABS' smb
 
 if [ ! -d /opt/samba/share ]; then
-    sudo mkdir /opt/samba/share
+    sudo mkdir -p /opt/samba/share
 fi
 sudo chmod 777 /opt/samba/share
 
-sed -i 's/[share]/g'  /etc/samba/smb.conf
-sed -i 's/  comment = Root Directories/g' /etc/samba/smb.conf
-sed -i 's/  browseable = yes/g' /etc/samba/smb.conf
-sed -i 's/  path = /opt/samba/share/g' /etc/samba/smb.conf
-#sed -i 's/  valid users = smb/g' /etc/samba/smb.conf
-sed -i 's/  public = yes/g' /etc/samba/smb.conf
+cat >> /etc/samba/smb.conf << EOM
+[share]
+   comment = Root Directories
+   browseable = yes
+   writeable = yes
+   path = /opt/share
+   #valid users = smb
+   public = yes
+EOM
+
 sudo /etc/init.d/smbd restart
 if [ $? -ne 0 ]; then
     echo "samba test fail !!!!"
-    lava-test-case samba-server fail
+    lava-test-case samba-server-restart fail
+else
+    echo "samba test succ"
+    lava-test-case samba-server-restart pass
 fi
 
 echo $! > /tmp/samba-server.pid
