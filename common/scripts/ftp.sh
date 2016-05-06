@@ -69,7 +69,7 @@ service vsftpd status | tee ${log_file}
     expect eof
 EOF
 
-if [ $(`find . -name 'ftp_get_test.log'`)x != ""x ]; then
+if [ $(find . -name 'ftp_get_test.log')x != ""x ]; then
     lava-test-case vsftpd-download --result pass
 else
     lava-test-case vsftpd-download --result fail
@@ -77,7 +77,7 @@ fi
 popd
 
 cd ~
-if [ $(`find . -name 'ftp_put_test.log'`)x != ""x ]; then
+if [ $(find . -name 'ftp_put_test.log')x != ""x ]; then
     lava-test-case vsftpd-upload --result pass
 else
     lava-test-case vsftpd-upload --result fail
