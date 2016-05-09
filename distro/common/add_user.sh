@@ -1,6 +1,7 @@
 #!/bin/bash
 
 USERNAME="testing"
+DISTRO="ubuntu"
 
 function add_user()
 {
@@ -27,6 +28,11 @@ send "Y\r"
 expect eof
 EOF
 }
+
+user_exists=$(cat /etc/passwd|grep ${USERNAME})
+if [ "$user_exists"x != ""x ]; then
+    . ./del_user.sh
+fi
 
 add_user
 if [ $? -ne 0 ]; then

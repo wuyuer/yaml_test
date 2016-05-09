@@ -28,11 +28,11 @@ run:
     steps:
         - lava-test-case linux-ubuntu-ssh-restart --shell service ssh restart
         - lava-test-case linux-ubuntu-update --shell sudo apt-get update
-        - lava-test-case linux-ubuntu-install-package --shell sudo apt-get install make
-        - lava-test-case linux-ubuntu-remove-package --shell sudo apt-get remove make
-        - lava-test-case linux-ubuntu-install-make --shell sudo apt-get install make
+        - lava-test-case linux-ubuntu-install-package --shell sudo apt-get install -y make
+        - lava-test-case linux-ubuntu-remove-package --shell sudo apt-get remove -y make
+        - lava-test-case linux-ubuntu-install-make --shell sudo apt-get install -y make
         - "./distro/common/add_user.sh"
-        - "./distro/common/kernel-make.sh ${VERSION}"
+        - "./distro/common/kernel-make.sh"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:
