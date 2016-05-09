@@ -30,10 +30,10 @@ EOF
 
 add_user
 if [ $? -ne 0 ]; then
-    echo "add user $USERNAME fail\n"
+    echo "add user $USERNAME fail"
     lava-test-case add-user-in-$DISTRO --result fail
 else
-    echo "add user $USERNAME success\n"
+    echo "add user $USERNAME success"
     lava-test-case add-user-in-$DISTRO --result pass
 fi
 

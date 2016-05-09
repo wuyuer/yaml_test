@@ -29,10 +29,10 @@ EOF
 
 auto_login
 if [ $? -ne 0 ]; then
-    echo "login user $USERNAME fail\n"
+    echo "login user $USERNAME fail"
     lava-test-case login-user-in-$DISTRO --result fail
 else
-    echo "login user $USERNAME success\n"
+    echo "login user $USERNAME success"
     lava-test-case login-user-in-$DISTRO --result pass
 fi
 
