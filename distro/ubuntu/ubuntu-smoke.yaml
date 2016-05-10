@@ -32,7 +32,7 @@ run:
         - lava-test-case linux-ubuntu-remove-package --shell sudo apt-get remove -y make
         - lava-test-case linux-ubuntu-install-make --shell sudo apt-get install -y make
         - "cd ./distro/common; ./add_user.sh; cd -"
-        - "./distro/common/kernel-make.sh"
+        - "./distro/common/kernel_make.sh"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:
