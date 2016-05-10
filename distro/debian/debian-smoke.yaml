@@ -2,7 +2,7 @@
 metadata:
     name: debian-smoke 
     format: "Lava-Test-Shell Test Definition 1.0"
-    description: "ubuntu smoke"
+    description: "debian smoke"
     maintainer:
         - wuyanjun1027@163.com
     scope:
@@ -23,12 +23,12 @@ install:
         - openssh-server
 run:
     steps:
-        - lava-test-case linux-ubuntu-ssh-restart --shell 
-        - lava-test-case linux-ubuntu-update --shell apt-get update
-        - lava-test-case linux-ubuntu-install-package --shell apt-get install make
-        - lava-test-case linux-ubuntu-remove-package --shell apt-get remove make
-        - lava-test-case linux-ubuntu-install-make --shell apt-get install make
-        - "cd ./distro/common; ./add_user.sh; cd -"
+        - lava-test-case linux-debian-ssh-restart --shell 
+        - lava-test-case linux-debian-update --shell apt-get update
+        - lava-test-case linux-debian-install-package --shell apt-get install make
+        - lava-test-case linux-debian-remove-package --shell apt-get remove make
+        - lava-test-case linux-debian-install-make --shell apt-get install make
+        - "cd ./distro/common; ./utils/add_user.sh; cd -"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:

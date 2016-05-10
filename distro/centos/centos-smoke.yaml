@@ -1,8 +1,8 @@
 
 metadata:
-    name: ubuntu-smoke 
+    name: centos-smoke 
     format: "Lava-Test-Shell Test Definition 1.0"
-    description: "ubuntu smoke"
+    description: "centos smoke"
     maintainer:
         - wuyanjun1027@163.com
     scope:
@@ -25,12 +25,12 @@ install:
        
 run:
     steps:
-        - lava-test-case linux-ubuntu-ssh-restart --shell service ssh restart
-        - lava-test-case linux-ubuntu-update --shell yum update
-        - lava-test-case linux-ubuntu-install-package --shell yum install make
-        - lava-test-case linux-ubuntu-remove-package --shell yum remove make
-        - lava-test-case linux-ubuntu-install-make --shell yum install make
-        - "cd ./distro/common; ./add_user.sh; cd -"
+        - lava-test-case linux-centos-ssh-restart --shell service ssh restart
+        - lava-test-case linux-centos-update --shell yum update
+        - lava-test-case linux-centos-install-package --shell yum install make
+        - lava-test-case linux-centos-remove-package --shell yum remove make
+        - lava-test-case linux-centos-install-make --shell yum install make
+        - "cd ./distro/common; ./utils/add_user.sh; cd -"
 
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
