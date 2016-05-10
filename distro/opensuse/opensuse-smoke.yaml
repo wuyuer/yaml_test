@@ -29,7 +29,7 @@ run:
         - lava-test-case linux-ubuntu-install-package --shell zypper install make
         - lava-test-case linux-ubuntu-remove-package --shell zypper remove make
         - lava-test-case linux-ubuntu-install-make --shell zypper install make
-        - "./distro/common/add_user.sh"
+        - "cd ./distro/common; ./add_user.sh; cd -"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:

@@ -31,7 +31,7 @@ EOF
 
 user_exists=$(cat /etc/passwd|grep ${USERNAME})
 if [ "$user_exists"x != ""x ]; then
-    . ./distro/common/del_user.sh
+    . ./del_user.sh
 fi
 
 add_user
