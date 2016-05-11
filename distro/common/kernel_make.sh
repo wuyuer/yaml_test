@@ -30,10 +30,11 @@ if [ -e $open_estuary_dir ]; then
     fi      
     false; while [ $? -ne 0 ]; do repo sync; done
     repo start master --all
-    if [ "$(ls -l)"x != ""x ] -o [ $? -ne 0 ] ; then
+    if [ $? -ne 0  -o  "$(ls -l)"x != ""x ]; then
         echo "update the estaury code fail\n"
         lava-test-case download-estuary-code --result fail
         lava-test-case build-estuary-native --result fail
+        exit 0
     else
         echo "update the estaury code success\n"
         lava-test-case download-estuary-code --result pass
@@ -54,7 +55,7 @@ elif [ "$(echo $product_name | grep -E 'D03|d03')"x != ""x ]; then
 elif [ "$(echo $product_name | grep -E 'D01|d01')"x != ""x ]; then
     PLATFORM="D01"
 else
-    PLATFORM="x86"
+    PLATFORM="D02"
 fi
 
 pushd ${open_estuary_dir}
