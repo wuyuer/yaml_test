@@ -1,6 +1,7 @@
 #!/bin/bash
 
 USERNAME="testing"
+. ./sys_info.sh
 
 function auto_login()
 {
@@ -30,9 +31,9 @@ EOF
 auto_login
 if [ $? -ne 0 ]; then
     echo "login user $USERNAME fail"
-    lava-test-case login-user-in-$DISTRO --result fail
+    lava-test-case login-user-in-$distro --result fail
 else
     echo "login user $USERNAME success"
-    lava-test-case login-user-in-$DISTRO --result pass
+    lava-test-case login-user-in-$distro --result pass
 fi
 

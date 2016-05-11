@@ -1,4 +1,5 @@
 #!/bin/bash
+. ./sys_info.sh
 
 function del_user()
 {
@@ -6,10 +7,10 @@ function del_user()
     userdel -r  $USERNAME
     if [ ! -d /home/$USERNAME ]; then
         echo "del user $USERNAME success"
-        lava-test-case del-user-in-$DISTRO --result pass
+        lava-test-case del-user-in-$distro --result pass
     else
         echo "del user $USERNAME fail"
-        lava-test-case del-user-in-$DISTRO --result fail
+        lava-test-case del-user-in-$distro --result fail
     fi
 }
 

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 USERNAME="testing"
-DISTRO="ubuntu"
+#distro="ubuntu"
+. ./sys_info.sh
 
 function add_user()
 {
@@ -37,9 +38,9 @@ fi
 add_user
 if [ $? -ne 0 ]; then
     echo "add user $USERNAME fail"
-    lava-test-case add-user-in-$DISTRO --result fail
+    lava-test-case add-user-in-$distro --result fail
 else
     echo "add user $USERNAME success"
-    lava-test-case add-user-in-$DISTRO --result pass
+    lava-test-case add-user-in-$distro --result pass
 fi
 
