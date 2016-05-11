@@ -15,7 +15,7 @@ fi
 
 # get the newest content of git repos
 export PATH=${current_path}/bin:$PATH; 
-open_estuary_dir=local/open-estuary 
+open_estuary_dir=open-estuary 
 if [ ! -e $open_estuary_dir ]; then
     mkdir -p $open_estuary_dir; 
 fi
@@ -45,7 +45,7 @@ fi
 DISTRO="ubuntu"
 PLATFORM="D02"
 
-.  ./common/scripts/install_dmidecode.sh | tee ${log_file}
+.  ../../common/scripts/install_dmidecode.sh | tee ${log_file}
 product_name=$(dmidecode -s system-product-name)
 if [ "$(echo $product_name | grep -E 'D02|d02')"x != ""x ]; then
     PLATFORM="D02"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. ./distro/common/utils/sys_info.sh
+. ./utils/sys_info.sh
 log_file="mysql_sysbench.log"
 
 declare -A distro_softname_dic

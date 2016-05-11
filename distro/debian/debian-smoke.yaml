@@ -28,7 +28,7 @@ run:
         - lava-test-case linux-debian-install-package --shell apt-get install make
         - lava-test-case linux-debian-remove-package --shell apt-get remove make
         - lava-test-case linux-debian-install-make --shell apt-get install make
-        - "cd ./distro/common; ./utils/add_user.sh; cd -"
+        - "cd ./distro/common/utils; ./add_user.sh; cd -"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:
