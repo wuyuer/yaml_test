@@ -31,7 +31,7 @@ run:
         - lava-test-case linux-ubuntu-install-package --shell sudo apt-get install -y make
         - lava-test-case linux-ubuntu-remove-package --shell sudo apt-get remove -y make
         - lava-test-case linux-ubuntu-install-make --shell sudo apt-get install -y make
-        - "cd ./distro/common; ./utils/add_user.sh; cd -"
+        - "cd ./distro/common; ./utils/add_user.sh; ./utils/auto_login.sh; ./utils/del_user.sh; cd -"
         - "./distro/common/kernel_make.sh"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+log_file="kernel_build.log"
+
 if [ "$1"x != ""x ]; then
     VERSION=$1
 fi
@@ -28,34 +30,35 @@ if [ -e $open_estuary_dir ]; then
     fi      
     false; while [ $? -ne 0 ]; do repo sync; done
     repo start master --all
-    if [ $? -ne 0 ]; then
+    if [ "$(ls -l)"x != ""x ] -o [ $? -ne 0 ] ; then
         echo "update the estaury code fail\n"
         lava-test-case download-estuary-code --result fail
+        lava-test-case build-estuary-native --result fail
     else
         echo "update the estaury code success\n"
         lava-test-case download-estuary-code --result pass
     fi
-    cd ../..
+    cd ..
 fi
 
 ################ build one platform and one distro  ####################
 DISTRO="ubuntu"
 PLATFORM="D02"
 
-.  ../../common/scripts/install_dmidecode.sh
+.  ./common/scripts/install_dmidecode.sh | tee ${log_file}
 product_name=$(dmidecode -s system-product-name)
-if [ $(echo $product_name | grep -E 'D02|d02')x != ""x ]; then
+if [ "$(echo $product_name | grep -E 'D02|d02')"x != ""x ]; then
     PLATFORM="D02"
-elif [ echo $product_name | grep -E 'D03|d03'x != ""x ]; then
+elif [ "$(echo $product_name | grep -E 'D03|d03')"x != ""x ]; then
     PLATFORM="D03"
-elif [ echo $product_name | grep -E 'D01|d01'x != ""x ]; then
+elif [ "$(echo $product_name | grep -E 'D01|d01')"x != ""x ]; then
     PLATFORM="D01"
 else
     PLATFORM="x86"
 fi
 
 pushd ${open_estuary_dir}
-    ./estuary/build.sh -p $PLATFORM -d $DISTRO
+    ./estuary/build.sh -p $PLATFORM -d $DISTRO  | tee ${log_file}
     if [ $? -ne 0 ]; then
         echo "build the $DISTRO for $PLATFORM error"
         lava-test-case build-estuary-native --result fail
@@ -64,4 +67,6 @@ pushd ${open_estuary_dir}
         lava-test-case build-estuary-native --result pass
     fi
 popd
+
+lava-test-run-attach ${log_file}
 
