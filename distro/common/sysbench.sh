@@ -1,22 +1,25 @@
 #!/bin/bash
 
-. ./utils/sys_info.sh
+pushd ./utils
+. ./sys_info.sh
+popd
 log_file="mysql_sysbench.log"
-
-declare -A distro_softname_dic
-
-declare -A distro_softname_dic
-ubuntu_list="libtool autoconf automake libmysqlclient-dev libmysqld-dev bzr expect"
-opensuse_list="bzr"
-debian_list="bzr"
-centos_list="bzr"
-fedora_list="bzr"
-distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
 
 set -x
 
-softwares=${distro_softname_dis[$distro]}
-. ./utils/install_update_soft.sh $update_commands $softwares $log_file $distro
+declare -A distro_softname_dic
+ubuntu_list='libtool autoconf automake libmysqlclient-dev libmysqld-dev bzr expect'
+opensuse_list='bzr'
+debian_list='bzr'
+centos_list='bzr'
+fedora_list='bzr'
+distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
+
+
+softwares=${distro_softname_dic[$distro]}
+echo $update_commands
+echo $softwares
+. ./utils/install_update_soft.sh "$update_commands" "$install_commands" "$softwares" $log_file $distro
 [ $? -ne 0 ] && exit
 
 sysbench_dir=sysbench-0.5
