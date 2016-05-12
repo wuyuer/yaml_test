@@ -16,7 +16,7 @@ distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$d
 set -x
 
 softwares=${distro_softname_dis[$distro]}
-. ./utils/install_update_soft.shh $update_commands $softwares $log_file $distro
+. ./utils/install_update_soft.sh $update_commands $softwares $log_file $distro
 [ $? -ne 0 ] && exit
 
 sysbench_dir=sysbench-0.5
