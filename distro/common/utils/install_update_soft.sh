@@ -8,7 +8,7 @@ log_file=$4
 distro=$5
 
 $update_commands | tee ${log_file}
-if [ $? -ne 0 ]; then
+if [ $? -eq 0 ]; then
     echo "update-software in $distro success" | tee ${log_file}
     lava-test-case update-software-of-${distro} --result pass
 else
@@ -18,9 +18,9 @@ else
 fi
 
 $install_commands $softwares | tee ${log_file}
-if [ $? -ne 0 ]; then
-    echo "install-software in $distro fail" | tee ${log_file}
-    lava-test-case install-software-of-${distro} --result fail
+if [ $? -eq 0 ]; then
+    echo "install-software in $distro success" | tee ${log_file}
+    lava-test-case install-software-of-${distro} --result success
 else
     echo "install-software in $distro fail" | tee ${log_file}
     lava-test-case install-software-of-${distro} --result fail
