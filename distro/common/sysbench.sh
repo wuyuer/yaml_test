@@ -13,8 +13,10 @@ centos_list="bzr"
 fedora_list="bzr"
 distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
 
+set -x
+
 softwares=${distro_softname_dis[$distro]}
-. ./distro/common/utils/install_update_soft.shh $update_commands $softwares $log_file $distro
+. ./utils/install_update_soft.shh $update_commands $softwares $log_file $distro
 [ $? -ne 0 ] && exit
 
 sysbench_dir=sysbench-0.5
