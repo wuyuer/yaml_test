@@ -8,7 +8,7 @@ elif [ $(echo $sys_info |grep -E 'CENTOS|CentOS|centos') ]; then
     distro="centos"
 elif [ $(echo $sys_info |grep -E 'FEDORA|Fedora|fedora') ]; then
     distro="fedora"
-elif [ $(echo $sys_info |grep -E 'DEBIAN|Debian|debian') ]; then
+elif [ $(echo $sys_info |grep -E 'DEB|Deb|deb') ]; then
     dsstro="debian"
 elif [ $(echo $sys_info |grep -E 'OPENSUSE|OpenSuse|opensuse') ]; then
     distro="opensuse"
