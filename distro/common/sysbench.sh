@@ -7,20 +7,21 @@ log_file="mysql_sysbench.log"
 
 set -x
 
-declare -A distro_softname_dic
-ubuntu_list='libtool autoconf automake libmysqlclient-dev libmysqld-dev bzr expect'
-opensuse_list='bzr'
-debian_list='bzr'
-centos_list='bzr'
-fedora_list='bzr'
-distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
-
-
-softwares=${distro_softname_dic[$distro]}
-echo $update_commands
-echo $softwares
-. ./utils/install_update_soft.sh "$update_commands" "$install_commands" "$softwares" $log_file $distro
-[ $? -ne 0 ] && exit
+function install_softwares()
+{
+    declare -A distro_softname_dic
+    ubuntu_list='libtool autoconf automake libmysqlclient-dev mysql-client libmysqld-dev bzr expect'
+    opensuse_list='bzr'
+    debian_list='bzr'
+    centos_list='bzr'
+    fedora_list='bzr'
+    distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
+    softwares=${distro_softname_dic[$distro]}
+    echo $update_commands
+    echo $softwares
+    . ./utils/install_update_soft.sh "$update_commands" "$install_commands" "$softwares" $log_file $distro
+    [ $? -ne 0 ] && echo -1
+}
 
 sysbench_dir=sysbench-0.5
 cpu_num=$(grep 'processor' /proc/cpuinfo |sort |uniq |wc -l)
@@ -46,10 +47,13 @@ db_driver=mysql
 : ${db_name:=sbtest}
 #: ${max_requests:=$10}
 : ${max_requests:=100000}
-test_name="$PWD/sysbench-0.5/sysbench/tests/db/oltp.lua"
+test_name="oltp"
 echo "max_requests are $max_requests"
 
-#exists=$(ps -aux | grep 'mysqld')
+$install_commands 'expect'
+./utils/${distro}_expect_mysql.sh $mysql_password | tee ${log_file}
+install_softwares
+
 mysql_version=$(mysql --version | awk '{ print $1"-" $2 ": " $3}')
 exists=$(echo $mysql_version|awk -F":" '{print $1}')
 if [ "$exists"x = "mysql-Ver"x ]; then
@@ -57,14 +61,6 @@ if [ "$exists"x = "mysql-Ver"x ]; then
 else
     echo "The mysql server has not been installed,Please install mysql,Refe caliper documentation"
     exit 1
-fi
-
-if [ ! -d $sysbench_dir ]; then
-  bzr branch lp:~sysbench-developers/sysbench/0.5 $sysbench_dir
-  if [ $? -ne 0 ]; then
-    echo 'Download the sysbench failed'
-    exit 1
-  fi
 fi
 
 mysql_location=$(whereis mysql)
@@ -77,40 +73,10 @@ do
 echo $j
 done
 
-for i in ${mysql_loc[@]}
-do
-   echo $i
-    tmp=$(echo $i | grep '\/lib\/mysql')
-    tmp1=$(echo $i | grep '\/include\/mysql')
-    if [ "$tmp"x != ""x ]; then
-        mysql_lib=$tmp
-    elif [ "$tmp1"x != ""x ]; then
-        mysql_include=$tmp1
-    fi
-done
-
-if [ "$mysql_lib"x = ""x ] or [ "$mysql_include"x = ""x ]; then
-    echo 'mysql has not been installed right'
-    exit 1
-fi
-
-if [ ! -d $sysbench_dir ]; then
-    echo 'sysbench has not been download completely'
-    exit 1
-fi
-
-export PATH=$PATH:/usr/local
-
-pushd $sysbench_dir
-  prefix=/usr/local/sysbench
-  ./autogen.sh
-  ./configure --prefix=$prefix --with-mysql-includes=$mysql_include --with-mysql-libs=$mysql_lib
-  make -s 
-  make install
-popd
-
-if [ $? -ne 0 ]; then 
-    echo "install expect failed"
+$install_commands sysbench  | tee ${log_file}
+sysbench --test=cpu help
+if [ $? -ne 0 ]; then
+    echo 'sysbench has not been installed success'
     exit 1
 fi
 
@@ -146,11 +112,11 @@ if [ $max_requests -eq 0 ]; then
 fi
 set -x
 
-sys_str="$sysbench_dir/sysbench/sysbench \
+# --oltp-tables-count=$oltp_tables_count \
+sys_str="sysbench \
   --db-driver=mysql \
   --mysql-table-engine=innodb \
   --oltp-table-size=$oltp_table_size \
-  --oltp-tables-count=$oltp_tables_count \
   --num-threads=$num_threads \
   --mysql-host=$mysql_host \
   --mysql-user=$mysql_user \
@@ -159,22 +125,28 @@ sys_str="$sysbench_dir/sysbench/sysbench \
   --test=$test_name \
   "
 # prepare the test data
-$sys_str  prepare
+$sys_str  prepare  | tee ${log_file}
 if [ $? -ne 0 ]; then
-    echo 'Prepare the oltp test data failed'
+    echo "Prepare the oltp test data failed"
     exit 1
+else
+    echo "prepare the oltp test data pass"
 fi
 
 # do the oltp test
-$sys_str run
+$sys_str run | tee ${log_file}
 if [ $? -ne 0 ]; then
-    echo 'Run the oltp test failed'
+    echo "Run the oltp test failed"
     exit 1
+else
+    echo "run the oltp test pass"
 fi
 
 # cleanup the test data
-$sys_str  cleanup
+$sys_str  cleanup | tee ${log_file}
 if [ $? -ne 0 ]; then
-    echo 'cleanup the test data failed'
+    echo "cleanup the test data failed"
     exit 1
+else
+    echo "cleanup the test data pass"
 fi

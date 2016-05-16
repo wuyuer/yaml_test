@@ -20,7 +20,7 @@ fi
 $install_commands $softwares | tee ${log_file}
 if [ $? -eq 0 ]; then
     echo "install-software in $distro success" | tee ${log_file}
-    lava-test-case install-software-of-${distro} --result success
+    lava-test-case install-software-of-${distro} --result pass
 else
     echo "install-software in $distro fail" | tee ${log_file}
     lava-test-case install-software-of-${distro} --result fail
