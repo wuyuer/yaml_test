@@ -23,8 +23,6 @@ install:
         - libtool
         - autoconf
         - automake
-        - libmysqlclient-dev
-        - libmysqld-dev
         - bzr
         - expect
 params:
