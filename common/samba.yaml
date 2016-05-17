@@ -6,6 +6,12 @@ metadata:
         - wu.wu@hisilicon.com
     scope:
         - functional
+    os:
+        - ubuntu
+        - fedora
+        - opensuse
+        - centos
+        - debian
     devices:
         - d02
         - d01
@@ -17,10 +23,9 @@ install:
     deps:
         - samba
         - smbfs
+        - smbclient
 
 run:
     steps:
-        - "./common/scripts/samba-server.sh"
-        - lava-sync ready
-        - lava-sync done
+        - "./common/scripts/samba.sh"
 
