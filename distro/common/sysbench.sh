@@ -51,7 +51,7 @@ test_name="oltp"
 echo "max_requests are $max_requests"
 
 $install_commands 'expect'
-./utils/${distro}_expect_mysql.sh $mysql_password | tee ${log_file}
+./../${distro}/scripts/${distro}_expect_mysql.sh $mysql_password | tee ${log_file}
 install_softwares
 
 mysql_version=$(mysql --version | awk '{ print $1"-" $2 ": " $3}')
