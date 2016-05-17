@@ -14,7 +14,7 @@ function install_softwares()
     opensuse_list='bzr'
     debian_list='bzr'
     centos_list='bzr'
-    fedora_list='bzr'
+    fedora_list='bzr libtool autoconf automake mysql-client libmysqld_dev'
     distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
     softwares=${distro_softname_dic[$distro]}
     echo $update_commands
