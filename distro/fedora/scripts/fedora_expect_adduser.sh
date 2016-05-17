@@ -5,8 +5,8 @@ set USERNAME [lindex $argv 0]
 
 spawn passwd $USERNAME
 expect "New password:"
-send "$mysql_password\r"
+send "$USERNAME\r"
 expect "Retype new password:"
-send "$mysql_password\r"
+send "$USERNAME\r"
 expect eof
 
