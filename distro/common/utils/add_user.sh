@@ -8,11 +8,11 @@ function add_user()
 {
     case $distro in 
         "ubuntu" | "debian" )
-            ./../ubuntu/scripts/ubuntu_expect_adduser.sh $USERNAME
+            ./../../ubuntu/scripts/ubuntu_expect_adduser.sh $USERNAME
             ;;
         "fedora" )
             useradd $USERNAME -d /home/$USERNAME
-            ./../fedora/scripts/fedora_expect_adduser.sh $USERNAME
+            ./../../fedora/scripts/fedora_expect_adduser.sh $USERNAME
             ;;
         "opensuse" )
             ;;
