@@ -45,7 +45,7 @@ else
 fi
 
 lxc-execute -n $distro /bin/echo hello
-print_infp $? lxc-execute
+print_info $? lxc-execute
 
 #lxc-attach -n $distro
 #print_info $? lxc-attach
