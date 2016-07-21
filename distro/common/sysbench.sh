@@ -14,7 +14,7 @@ function install_softwares()
     opensuse_list='bzr'
     debian_list='bzr'
     centos_list='bzr'
-    fedora_list='bzr libtool autoconf automake mysql-client libmysqld_dev'
+    fedora_list='bzr'
     distro_softname_dic=([ubuntu]=$ubuntu_list [opensuse]=$opensuse_list [debian]=$debian_list [centos]=$centos_list [fedora]=$fedora_list)
     softwares=${distro_softname_dic[$distro]}
     echo $update_commands
@@ -125,7 +125,7 @@ sys_str="sysbench \
   --test=$test_name \
   "
 # prepare the test data
-$sys_str  prepare  | tee ${log_file}
+$sys_str  prepare
 if [ $? -ne 0 ]; then
     echo "Prepare the oltp test data failed"
     exit 1
@@ -134,7 +134,7 @@ else
 fi
 
 # do the oltp test
-$sys_str run | tee ${log_file}
+$sys_str run
 if [ $? -ne 0 ]; then
     echo "Run the oltp test failed"
     exit 1
@@ -143,7 +143,7 @@ else
 fi
 
 # cleanup the test data
-$sys_str  cleanup | tee ${log_file}
+$sys_str  cleanup
 if [ $? -ne 0 ]; then
     echo "cleanup the test data failed"
     exit 1
