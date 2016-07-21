@@ -26,7 +26,7 @@ if ls /sys/class/dmi
 then
     lava-test-case kernel-space-sysfs-dmi-exist --result pass
 else
-    lava-test-case kernel-space-sysfs-dmi-exist --result fail 
+    lava-test-case kernel-space-sysfs-dmi-exist --result fail
 fi
 
 if cat /sys/class/dmi/id/bios_date

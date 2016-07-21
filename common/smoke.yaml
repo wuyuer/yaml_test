@@ -19,17 +19,13 @@ metadata:
         - d02
         - d03
         - d01
-    
-install:
-    deps:
-        - dmidecode
 
 run:
     steps:
         - lava-test-case linux-linaro-pwd --shell pwd
         - lava-test-case linux-linaro-uname --shell uname -a
         - lava-test-case linux-linaro-vmstat --shell vmstat
-        - lava-test-case linux-linaro-ifconfig --shell ifconfig -a
+        - lava-test-case linux-linaro-ipaddr --shell ip addr
         - lava-test-case linux-linaro-lscpu --shell lscpu
         - lava-test-case linux-linaro-lsb_release --shell  lsb_release -a
         - lava-test-case linux-linaro-cpuinfo --shell cat /proc/cpuinfo
@@ -47,5 +43,5 @@ run:
         - lava-test-case linux-linaro-cpu-info --shell lscpu
         - lava-test-case linux-linaro-pci-info --shell lspci
         - lava-test-case linux-linaro-usb-info --shell lsusb
-        - ./common/scripts/dmidecode.sh
+        - cd ./common/scripts; ./dmidecode.sh cd -
 

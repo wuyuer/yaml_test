@@ -6,7 +6,7 @@ USERNAME="testing"
 
 function add_user()
 {
-    case $distro in 
+    case $distro in
         "ubuntu" | "debian" )
             ./../../ubuntu/scripts/ubuntu_expect_adduser.sh $USERNAME
             ;;
@@ -17,6 +17,9 @@ function add_user()
         "opensuse" )
             ;;
         "centos" )
+            adduser $USERNAME
+            PASSWD="open1234asd"
+            ./../../centos/scripts/centos_expect_adduser.sh $USERNAME $PASSWD
             ;;
     esac
 }
