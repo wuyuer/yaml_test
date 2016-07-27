@@ -22,6 +22,7 @@ install:
         - lxc-templates
         - lxc
         - wget
+        - expect
 
 params:
     VERSION: ''

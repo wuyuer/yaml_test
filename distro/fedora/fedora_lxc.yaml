@@ -24,6 +24,7 @@ install:
         - wget
         - lxc-extra
         - debootstrap
+        - expect
         - libvirt
 
 params:

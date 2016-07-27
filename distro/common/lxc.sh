@@ -71,7 +71,13 @@ fi
 lxc-execute -n $distro_name /bin/echo hello
 print_info $? lxc-execute
 
-lxc-attach -n $distro_name
+/usr/bin/expect <<EOF
+set timeout 100
+spawn lxc-attach -n $distro_name
+expect "ubuntu"
+send "exit\r"
+expect eof
+EOF
 print_info $? lxc-attach
 
 lxc-stop --name $distro_name
@@ -79,7 +85,6 @@ print_info $? lxc-stop
 
 lxc-destroy --name $distro_name
 print_info $? lxc-destory
-
 
 $install_commands lxc-tests
 install_results=$?
