@@ -68,12 +68,8 @@ else
     print_info 0 lxc-start
 fi
 
-string=$(echo `lxc-execute -n $distro_name /bin/echo hello` | grep "ailed")
-if [ x"$string" != x"" ]; then
-    print_info 1 lxc-execute
-else
-    print_info 0 lxc-execute
-fi
+lxc-execute -n $distro_name /bin/echo hello
+print_info $? lxc-execute
 
 lxc-attach -n $distro_name
 print_info $? lxc-attach
