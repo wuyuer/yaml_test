@@ -19,7 +19,9 @@ params:
 
 install:
     deps:
+        - lxc-templates
         - lxc
+        - wget
 
 params:
     VERSION: ''

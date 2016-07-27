@@ -1,5 +1,26 @@
 #!/bin/bash
 
+function config_brctl()
+{
+    ip_segment=$(ip addr show `ip route | grep "default" | awk '{print $NF}'`| grep -o "inet [0-9\.]*" | cut -d" " -f 2 | cut -d"." -f 3)
+    echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
+
+    $stop_service firewalld.service
+    $disable_service firewalld.service
+    $enable_service NetworkManager-wait-online.service
+cat << EOF > /etc/sysconfig/network-scripts/ifcfg-virbr0
+DEVICE="lxcbr0"
+BOOTPROTO="static"
+IPADDR="192.168.${ip_segment}.123"
+NETMASK="255.255.255.0"
+ONBOOT="yes"
+TYPE="Bridge"
+NM_CONTROLLED="no"
+IPV6_PEERDNS=yes
+IPV6_PEERROUTES=yes
+EOF
+}
+
 pushd ./utils
 . ./sys_info.sh
 popd
@@ -7,6 +28,25 @@ popd
 config_output=$(lxc-checkconfig)
 [[ $config_output =~ 'missing' ]] && print_info 1 lxc-checkconfig
 [[ $config_output =~ 'missing' ]] || print_info 0 lxc-checkconfig
+
+case $distro in 
+    "ubuntu" )
+        ;;
+    "fedora" )
+        sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/share/lxc/templates/lxc-ubuntu-cloud
+        sed -i 's/xpJf/xpf/g' /usr/share/lxc/templates/lxc-ubuntu-cloud
+        #cp /etc/lxc/default.conf /etc/lxc/default.conf_bk
+        sed -i "s/lxcbr0/virbr0/g"  /etc/lxc/default.conf
+        brtcl_exist=$(ip addr | grep virbr0)
+        if [ x"$brtcl_exist" = ""x ]; then
+            config_brtcl
+        fi
+        $start_commands libvirtd
+        ;;
+    "centos" )
+        sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/local/share/lxc/templates/lxc-ubuntu-cloud
+        ;;
+esac
 
 distro_name=ubuntu
 lxc-create -n $distro_name -t ubuntu-cloud -- -r vivid -T http://htsat.vicp.cc:808/docker-image/ubuntu-15.04-server-cloudimg-arm64-root.tar.gz

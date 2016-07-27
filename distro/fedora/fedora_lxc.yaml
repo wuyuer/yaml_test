@@ -20,13 +20,18 @@ params:
 install:
     deps:
         - lxc
+        - lxc-templates
+        - wget
+        - lxc-extra
+        - debootstrap
+        - libvirt
 
 params:
     VERSION: ''
        
 run:
     steps:
-        - "cd ./distro/common; ./ubuntu_lxc.sh; cd -"
+        - "cd ./distro/common; ./lxc.sh; cd -"
 parse:
     pattern: "^(?!.+ED)(?P<test_case_id>\\w+)\\s+(?P<result>\\w+)\\s+\\d$"
     fixupdict:
