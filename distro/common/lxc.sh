@@ -3,10 +3,14 @@
 function config_brctl()
 {
     ip_segment=$(ip addr show `ip route | grep "default" | awk '{print $NF}'`| grep -o "inet [0-9\.]*" | cut -d" " -f 2 | cut -d"." -f 3)
-    echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
+
+    if [ x"$(cat  /etc/sysconfig/network-scripts/ifcfg-lo | grep TYPE)" = x"" ];
+    then
+        echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
+    fi
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-virbr0
-DEVICE=virbr0"
+DEVICE="virbr0"
 BOOTPROTO="static"
 IPADDR="192.168.${ip_segment}.123"
 NETMASK="255.255.255.0"
