@@ -6,7 +6,7 @@ function config_brctl()
     echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-virbr0
-DEVICE="lxcbr0"
+DEVICE=virbr0"
 BOOTPROTO="static"
 IPADDR="192.168.${ip_segment}.123"
 NETMASK="255.255.255.0"
@@ -29,6 +29,8 @@ config_output=$(lxc-checkconfig)
 [[ $config_output =~ 'missing' ]] && print_info 1 lxc-checkconfig
 [[ $config_output =~ 'missing' ]] || print_info 0 lxc-checkconfig
 
+set -x
+
 case $distro in 
     "ubuntu" )
         echo "lxc.aa_allow_incomplete = 1"  >> /var/lib/lxc/${distro}/config
@@ -42,7 +44,7 @@ case $distro in
         if [ x"$brtcl_exist" = ""x ]; then
             config_brctl
         fi
-        $start_service libvirtd
+        $restart_service libvirtd.service
         $restart_service network.service
         ;;
     "centos" )
@@ -69,17 +71,17 @@ else
     print_info 0 lxc-start
 fi
 
-lxc-execute -n $distro_name /bin/echo hello
-print_info $? lxc-execute
-
 /usr/bin/expect <<EOF
-set timeout 100
+set timeout 200
 spawn lxc-attach -n $distro_name
 expect "ubuntu"
 send "exit\r"
 expect eof
 EOF
 print_info $? lxc-attach
+
+lxc-execute -n $distro_name /bin/echo hello
+print_info $? lxc-execute
 
 lxc-stop --name $distro_name
 print_info $? lxc-stop
