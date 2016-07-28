@@ -9,7 +9,7 @@ if [ $? -ne 0 ]; then
         pushd ../../distro/common/utils/
             . ./sys_info.sh
         popd
-        $install_commands expect
+        $install_commands wget
     fi
 
     echo "dmidecode has not been installed, starting to install..."
