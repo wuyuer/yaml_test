@@ -72,7 +72,7 @@ else
 fi
 
 /usr/bin/expect <<EOF
-set timeout 200
+set timeout 400
 spawn lxc-attach -n $distro_name
 expect "ubuntu"
 send "exit\r"
