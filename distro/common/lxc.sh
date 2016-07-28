@@ -42,8 +42,8 @@ case $distro in
         if [ x"$brtcl_exist" = ""x ]; then
             config_brctl
         fi
-        $start_commands libvirtd
-        $restart_commands network.service
+        $start_service libvirtd
+        $restart_service network.service
         ;;
     "centos" )
         sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/local/share/lxc/templates/lxc-ubuntu-cloud

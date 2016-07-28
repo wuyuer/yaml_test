@@ -23,6 +23,7 @@ fi
 
 restart_service='systemctl restart'
 start_service='systemctl start'
+stop_service='systemctl stop'
 status_service='systemctl status'
 enable_service='systemctl enable'
 disable_service='systemctl disable'
