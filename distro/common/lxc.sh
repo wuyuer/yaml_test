@@ -5,9 +5,6 @@ function config_brctl()
     ip_segment=$(ip addr show `ip route | grep "default" | awk '{print $NF}'`| grep -o "inet [0-9\.]*" | cut -d" " -f 2 | cut -d"." -f 3)
     echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
 
-    $stop_service firewalld.service
-    $disable_service firewalld.service
-    $enable_service NetworkManager-wait-online.service
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-virbr0
 DEVICE="lxcbr0"
 BOOTPROTO="static"
@@ -19,6 +16,9 @@ NM_CONTROLLED="no"
 IPV6_PEERDNS=yes
 IPV6_PEERROUTES=yes
 EOF
+    $stop_service firewalld.service
+    $disable_service firewalld.service
+    $enable_service NetworkManager-wait-online.service
 }
 
 pushd ./utils
@@ -43,6 +43,7 @@ case $distro in
             config_brctl
         fi
         $start_commands libvirtd
+        $restart_commands network.service
         ;;
     "centos" )
         sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/local/share/lxc/templates/lxc-ubuntu-cloud
