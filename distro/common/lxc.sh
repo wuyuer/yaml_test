@@ -39,7 +39,7 @@ case $distro in
         sed -i "s/lxcbr0/virbr0/g"  /etc/lxc/default.conf
         brtcl_exist=$(ip addr | grep virbr0)
         if [ x"$brtcl_exist" = ""x ]; then
-            config_brtcl
+            config_brctl
         fi
         $start_commands libvirtd
         ;;
