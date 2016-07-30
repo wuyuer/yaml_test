@@ -15,16 +15,16 @@ download_url=$1
 wget ${download_url}/${IMAGE}
 wget ${download_url}/${ROOTFS}
 
-if [ ! -e ${CUR_PATH}/${IMAGE} ] or [ ! -e ${CUR_PATH}/${ROOTFS} ]; then
+if [ [ -e ${CUR_PATH}/${IMAGE} ] -a [ -e ${CUR_PATH}/${ROOTFS} ] ]; then
+   lava-test-case imge_or_rootfs_exist --result pass
+else
    echo '${IMAGE} or ${ROOTFS} not exist'
    lava-test-case imge_or_rootfs_exist --result fail
    exit 0
-else
-   lava-test-case imge_or_rootfs_exist --result pass
 fi
 
 chmod a+x ${CUR_PATH}/qemu-load-kvm.sh
-${CUR_PATH}/qemu-load-kvm.sh
+${CUR_PATH}/qemu-load-kvm.sh $IMAGE $ROOTFS
 if [ $? -ne 0 ]; then
     echo 'qemu system load fail'
     lava-test-case qemu-system-load --result fail
@@ -59,7 +59,6 @@ if [ $? -ne 0 ];then
     lava-test-case create-partition --result fail
     exit 0
 else
-
     nbd_p1=$(fdisk /dev/nbd0 -l | grep -w 'nbd0p1')
     if [ "$nbd_pl"x != ""x ] ; then
         lava-test-case create-partition --result fail
@@ -89,7 +88,7 @@ else
 fi
 
 cd /mnt/image
-zcat ${CUR_PATH}/qemu-test/mini-rootfs-arm64.cpio.gz | cpio -dim
+zcat ${CUR_PATH}/qemu-test/${ROOTFS} | cpio -dim
 if [ $? -ne 0 ]
 then
     echo 'tar file system fail'
