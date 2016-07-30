@@ -5,7 +5,7 @@ popd
 
 QEMU='qemu-test'
 IMAGE='Image_D02'
-ROOTFS='mini-rootfs-arm64.cpio.gz'
+ROOTFS='mini-rootfs.cpio.gz'
 HOME_PATH=$HOME
 CUR_PATH=$PWD
 set -x
