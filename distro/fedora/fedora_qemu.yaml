@@ -22,6 +22,9 @@ install:
     deps:
         - git
         - expect
+        - qemu
+        - qemu-kvm
+        - libvirt
 
 params:
     VERSION: ''

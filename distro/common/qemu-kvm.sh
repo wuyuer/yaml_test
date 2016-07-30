@@ -12,15 +12,6 @@ set -x
 
 download_url=$1
 
-$install_commands qemu qemu-kvm libvirt-bin
-if [ $? -ne 0 ]; then
-   echo 'install qemu qemu-kvm libvirt-bin fail'
-   lava-test-case install-qemu-kvm --result fail
-   exit 0
-else
-   lava-test-case install-qemu-kvm --result pass
-fi
-
 wget ${download_url}/${IMAGE}
 wget ${download_url}/${ROOTFS}
 
