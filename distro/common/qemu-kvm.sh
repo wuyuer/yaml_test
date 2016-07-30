@@ -12,10 +12,15 @@ set -x
 
 download_url=$1
 
-wget ${download_url}/${IMAGE}
-wget ${download_url}/${ROOTFS}
+if [ ! -e ${CUR_PATH}/${IMAGE} ]; then
+    wget ${download_url}/${IMAGE}
+fi
 
-if [ [ -e ${CUR_PATH}/${IMAGE} ] -a [ -e ${CUR_PATH}/${ROOTFS} ] ]; then
+if [ ! -e ${CUR_PATH}/${ROOTFS} ]; then
+    wget ${download_url}/${ROOTFS}
+fi
+
+if [ -e ${CUR_PATH}/${IMAGE} ] && [ -e ${CUR_PATH}/${ROOTFS} ]; then
    lava-test-case imge_or_rootfs_exist --result pass
 else
    echo '${IMAGE} or ${ROOTFS} not exist'
