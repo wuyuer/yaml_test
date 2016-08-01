@@ -3,7 +3,6 @@ pushd ./utils
 . ./sys_info.sh
 popd
 
-QEMU='qemu-test'
 IMAGE='Image_D02'
 ROOTFS='mini-rootfs.cpio.gz'
 HOME_PATH=$HOME
@@ -93,7 +92,7 @@ else
 fi
 
 cd /mnt/image
-zcat ${CUR_PATH}/qemu-test/${ROOTFS} | cpio -dim
+zcat ${CUR_PATH}/${ROOTFS} | cpio -dim
 if [ $? -ne 0 ]
 then
     echo 'tar file system fail'
