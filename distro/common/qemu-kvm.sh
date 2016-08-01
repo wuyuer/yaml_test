@@ -38,7 +38,7 @@ else
     lava-test-case qemu-system-load --esult pass
 fi
 
-qemu-img create -f qcow2 ubuntu.img 10G
+qemu-img create -f qcow2 ${distro}.img 10G
 if [ $? -ne 0 ]; then
     echo 'qemu-img create fail'
     lava-test-case qemu-img-create --result fail
@@ -56,7 +56,7 @@ else
     lava-test-case modprobe-nbd --result pass
 fi
 
-qemu-nbd -c /dev/nbd0 ubuntu.img
+qemu-nbd -c /dev/nbd0 ${distro}.img
 chmod a+x ${CUR_PATH}/qemu-create-partition.sh
 ${CUR_PATH}/qemu-create-partition.sh
 if [ $? -ne 0 ];then

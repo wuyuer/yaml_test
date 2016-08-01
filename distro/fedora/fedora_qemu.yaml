@@ -21,6 +21,7 @@ params:
 install:
     deps:
         - git
+        - wget
         - expect
         - qemu
         - qemu-kvm
