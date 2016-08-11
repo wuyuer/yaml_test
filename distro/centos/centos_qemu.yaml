@@ -23,9 +23,16 @@ install:
         - git
         - wget
         - expect
+        - kvm
+        - virt-manager
+        - virt-install
+        - xauth
         - qemu
         - qemu-kvm
+        - qemu-img
         - libvirt
+        - libvirt-python
+        - libvirt-client
 
 params:
     BINURL: 'http://114.119.4.74:8083/open-estuary/v2.3-rc0/d02-arm64/binary/'

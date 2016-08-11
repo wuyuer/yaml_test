@@ -31,6 +31,20 @@ pushd ./utils
 . ./sys_info.sh
 popd
 
+which lxc-checkconfig
+if [ $? -ne 0 ]; then
+    LXC_VERSION=lxc-2.0.0.tar.gz
+    wget http://linuxcontainers.org/lxc/download/${LXC_VERSION}
+    tar xf ${LXC_VERSION}
+    cd ${LXC_VERSION%%.tar.gz}
+    ./configure
+    make
+    make install
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+fi
+
+which lxc-checkconfig
+print_info $? lxc-installed
 config_output=$(lxc-checkconfig)
 [[ $config_output =~ 'missing' ]] && print_info 1 lxc-checkconfig
 [[ $config_output =~ 'missing' ]] || print_info 0 lxc-checkconfig
