@@ -9,8 +9,10 @@ function config_brctl()
         echo "TYPE=lookback" >> /etc/sysconfig/network-scripts/ifcfg-lo
     fi
 
-cat << EOF > /etc/sysconfig/network-scripts/ifcfg-virbr0
-DEVICE="virbr0"
+    config_name=$1
+
+cat << EOF > /etc/sysconfig/network-scripts/${config_name}
+DEVICE="${config_name}"
 BOOTPROTO="static"
 IPADDR="192.168.${ip_segment}.123"
 NETMASK="255.255.255.0"
@@ -36,9 +38,6 @@ config_output=$(lxc-checkconfig)
 set -x
 
 case $distro in 
-    "ubuntu" )
-        echo "lxc.aa_allow_incomplete = 1"  >> /var/lib/lxc/${distro}/config
-        ;;
     "fedora" )
         sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/share/lxc/templates/lxc-ubuntu-cloud
         sed -i 's/xpJf/xpf/g' /usr/share/lxc/templates/lxc-ubuntu-cloud
@@ -46,13 +45,19 @@ case $distro in
         sed -i "s/lxcbr0/virbr0/g"  /etc/lxc/default.conf
         brtcl_exist=$(ip addr | grep virbr0)
         if [ x"$brtcl_exist" = ""x ]; then
-            config_brctl
+            config_brctl virbr0
         fi
         $restart_service libvirtd.service
         $restart_service network.service
         ;;
     "centos" )
         sed -i 's/type ubuntu-cloudimg-query/#type ubuntu-cloudimg-query/g' /usr/local/share/lxc/templates/lxc-ubuntu-cloud
+        brtcl_exist=$(ip addr | grep virbr0)
+        if [ x"$brtcl_exist" = ""x ]; then
+            config_brctl lxcbr0
+        fi
+        $restart_service libvirtd.service
+        $restart_service network.service
         ;;
 esac
 
@@ -60,16 +65,25 @@ distro_name=ubuntu
 lxc-create -n $distro_name -t ubuntu-cloud -- -r vivid -T http://htsat.vicp.cc:808/docker-image/ubuntu-15.04-server-cloudimg-arm64-root.tar.gz
 print_info $? lxc-create
 
+lxc-ls
+
 distro_exists=$(lxc-ls --fancy)
 [[ "${distro_exists}" =~ $distro_name ]] && print_info 0 lxc-ls
 [[ "${distro_exists}" =~ $distro_name ]] || print_info 1 lxc-ls
 
+case $distro in
+    "ubuntu" )
+        echo "lxc.aa_allow_incomplete = 1"  >> /var/lib/lxc/${distro_name}/config
+        sudo /etc/init.d/apparmor reload
+        sudo aa-status
+        ;;
+esac
 
-lxc-start --name $distro_name --daemon
+lxc-start --name ${distro_name} --daemon
 result=$?
 
 lxc_status=$(lxc-info --name $distro_name)
-if [ "$(echo $lxc_status | grep $distro_name | grep 'RUNNING')" = ""x -a $result -ne 0 ]; then
+if [ "$(echo $lxc_status | grep $distro_name | grep 'RUNNING')" = "" ] && [ $result -ne 0 ]; then
     print_info 1 lxc-start
 else
     print_info 0 lxc-start
@@ -83,6 +97,9 @@ send "exit\r"
 expect eof
 EOF
 print_info $? lxc-attach
+
+lxc-stop --name $distro_name
+print_info $? lxc-stop
 
 lxc-execute -n $distro_name /bin/echo hello
 print_info $? lxc-execute
