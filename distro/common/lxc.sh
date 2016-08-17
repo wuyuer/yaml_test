@@ -34,7 +34,7 @@ popd
 which lxc-checkconfig
 if [ $? -ne 0 ]; then
     LXC_VERSION=lxc-2.0.0.tar.gz
-    download_file http://linuxcontainers.org/lxc/download/${LXC_VERSION}
+    download_file http://linuxcontainers.org/downloads/lxc/${LXC_VERSION}
     tar xf ${LXC_VERSION}
     cd ${LXC_VERSION%%.tar.gz}
     ./configure
