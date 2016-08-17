@@ -40,6 +40,7 @@ if [ $? -ne 0 ]; then
     ./configure
     make
     make install
+    cd -
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 fi
 

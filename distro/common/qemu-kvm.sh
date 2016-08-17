@@ -37,6 +37,7 @@ if [ $? -ne 0 ]; then
     ./configure --target-list=aarch64-softmmu
     make -j16
     make install
+    cd -
 fi
 
 qemu-system-aarch64 --help
